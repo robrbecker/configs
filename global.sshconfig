@@ -1,1 +1,9 @@
-/Users/robbecker/.ssh/config
+
+# Default to personal account
+Host github.com
+    IdentityFile   ~/.ssh/robrbecker_rsa
+
+Host github.com *.github.com
+    User           git
+    Hostname       github.com
+    IdentitiesOnly yes
