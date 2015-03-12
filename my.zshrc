@@ -246,9 +246,16 @@ alias nopass="killall runscope-passageway"
 ## functions
 nvsup() {
 
-  local imageToLoad="latest"
+  local workerTag="latest"
+  local managerTag="latest"
+
   if [[ $1 != "" ]]; then
-    imageToLoad="$1"
+    workerTag="$1"
+    managerTag="$1"
+  fi
+
+  if [[ $2 != "" ]]; then
+    managerTag="$2"
   fi
 
   b2d up
@@ -260,11 +267,11 @@ nvsup() {
   docker rm nvs-task-manager
   docker rm nvs-worker
 
-  docker pull docker.webfilings.org/hydra/nvs-task-manager:"$imageToLoad"
-  docker pull docker.webfilings.org/hydra/nvs-worker:"$imageToLoad"
+  docker pull docker.webfilings.org/hydra/nvs-task-manager:"$managerTag"
+  docker pull docker.webfilings.org/hydra/nvs-worker:"$workerTag"
 
-  docker run -t -d -p 49444:49444 --name nvs-task-manager -e "DEMETER_CONF=-l DEBUG" docker.webfilings.org/hydra/nvs-task-manager:"$imageToLoad"
-  docker run -d --name nvs-worker --link nvs-task-manager:nvs-task-manager -e "DEMETER_CONF=-l DEBUG" docker.webfilings.org/hydra/nvs-worker:"$imageToLoad"
+  docker run -t -d -p 49444:49444 --name nvs-task-manager -e "DEMETER_CONF=-l DEBUG" docker.webfilings.org/hydra/nvs-task-manager:"$managerTag"
+  docker run -d --name nvs-worker --link nvs-task-manager:nvs-task-manager -e "DEMETER_CONF=-l DEBUG" docker.webfilings.org/hydra/nvs-worker:"$workerTag"
 
   docker start nvs-task-manager
   docker start nvs-worker  
