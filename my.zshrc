@@ -182,7 +182,7 @@ alias bsdocviewerinstall='bslinkdocviewerassets && bsdocviewerpip'
 alias resetdata='bsmyaccount && bs && workon sky && rm -rf datastore && mkdir datastore && python tools/erase_reset_data.py --admin="rob" --password="go" --enabled_settings=enable_presentations,enable_doc_viewer,enable_two_column'
 alias bslog="tail -f /tmp/bs.log"
 alias dsback="bs && rm -rf ~/ds/datastore && cp -R datastore ~/ds"
-alias bsrest="bs && cp -R ~/ds/datastore"
+alias dsrest="bs && cp -R ~/ds/datastore"
 bsfonts() {
   bs
   workon sky
@@ -241,6 +241,7 @@ alias bsdeploy="ws && rm -rf external_libs/functional_tests && bsdeploy.sh"
 alias mov2gif="ffmpeg -i in.mov -s 640x480 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > out.gif"
 
 alias passit="runscope-passageway --bucket=17oi37jseh6z --fixed 8001"
+alias nopass="killall runscope-passageway"
 
 ## functions
 nvsup() {
