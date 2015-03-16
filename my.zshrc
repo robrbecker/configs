@@ -149,7 +149,11 @@ by() {
     echo Starting Bigsky
     bs
     workon sky
-    (python manage.py runserver 0.0.0.0:8001 2>&1) > /tmp/bs.log &
+    if [[ $1 == "" ]]; then
+      (python manage.py runserver 0.0.0.0:8001 2>&1) > /tmp/bs.log &
+    else 
+      python manage.py runserver 0.0.0.0:8001
+    fi
   else
     echo Already running
   fi
