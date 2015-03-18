@@ -137,6 +137,7 @@ alias gsl="git stash list"
 alias gsp="git stash pop"
 alias gsc="git stash clear"
 alias gs="git stash"
+alias gsu="git submodule update --init"
 alias gf="git fetch"
 alias gmm="git merge -s recursive -X patience -X ignore-all-space origin/master"
 alias gitwork="cp ~/.ssh/work.config ~/.ssh/config && cp ~/work.gitconfig ~/.gitconfig"
@@ -160,7 +161,7 @@ by() {
 }
 
 alias skyup="bs && git pull && git submodule update --init && workon sky && pip install -r requirements_dev.txt"
-alias nobs="killall python"
+alias nobs="killall python -SIGINT"
 alias repip='bs && workon sky && pip install -r requirements_dev.txt'
 alias revenv="deac && rm -rf /Users/robbecker/Envs/sky && bs && mkvirtualenv sky -a /Users/robbecker/workspace/bigsky"
 alias bsant='\
@@ -210,7 +211,14 @@ rebs() {
   bsfonts
   say Done with all the bullshit
 }
-
+redv() {
+  nobs
+  dv
+  rejs
+  grunt
+  piplink_dv
+  by
+}
 # Alias all the things
 alias ws='bs && workon sky'
 alias pfz='bs && workon sky && pip freeze'
