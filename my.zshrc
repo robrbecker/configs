@@ -37,7 +37,7 @@ ZSH_THEME="robbyrussell"
 # much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment following line if you want to  shown in the command execution time stamp 
+# Uncomment following line if you want to  shown in the command execution time stamp
 # in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
 # yyyy-mm-dd
 # HIST_STAMPS="mm/dd/yyyy"
@@ -51,13 +51,13 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export GOPATH="/Users/robbecker/go"
-#export DART_SDK="/Users/robbecker/dart/dart-sdk/" #1.8
-export DART_SDK="/Users/robbecker/downloads/dart/dart-sdk/" # 1.9
+export DART_SDK="/Users/robbecker/dart/dart-sdk/"
+#export DART_SDK="/Users/robbecker/downloads/dart/dart-sdk/" # dev channel
 
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 export PATH="/usr/local/opt/ruby/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/go/bin:$GOPATH/bin:/Users/robbecker/bin:/Users/robbecker/android-sdk/platform-tools:/Users/robbecker/android-sdk/tools:$DART_SDK/bin:/Users/robbecker/google-cloud-sdk/bin:./node_modules/.bin:/Users/robbecker/.pub-cache/bin"
 # Enable remote debugging in PyCharm -lrf 12/4/2014
-export PYTHONPATH='/Applications/PyCharm.app/Contents/pycharm-debug.egg'
+export PYTHONPATH='/Applications/PyCharm.app/Contents/debug-eggs/pycharm-debug.egg'
 
 export CFLAGS="-Qunused-arguments"
 export CPPFLAGS="-Qunused-arguments"
@@ -97,6 +97,7 @@ export SIM_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimula
 alias bl="bower link"
 alias lsbc='ls bower_components'
 alias lsnm='ls node_modules'
+alias lspk='ls packages'
 alias bower='noglob bower'
 alias blall='blcmn && blui && blvw && blann && bl wDOM && lsbc'
 alias blui='bower link wf-uicomponents'
@@ -107,8 +108,10 @@ alias lsbowerlinks='ls -al ~/.local/share/bower/links'
 alias rebower='rm -rf bower_components/ && bower install'
 alias renpm='rm -rf node_modules/ && npm install'
 alias rejs="renpm && rebower"
+alias rm='rm -rf'
 
 # cd to directories
+alias wet='cd ~/workspace/wErrorTrack'
 alias dv='cd ~/workspace/wf-js-document-viewer'
 alias wdom='cd ~/workspace/wDOM'
 alias bs='cd ~/workspace/bigsky'
@@ -121,6 +124,7 @@ alias boks='cd ~/workspace/bigsky/books'
 alias rv='cd ~/workspace/wf-js-reference-viewer'
 alias vs='cd ~/workspace/wf-viewer-services'
 alias vw='cd ~/workspace/wf-js-viewer'
+alias wv='cd ~/workspace/wViewer'
 alias paw='cd ~/workspace/paw'
 alias cmn='cd ~/workspace/wf-common'
 alias wglp='cd ~/workspace/wGulp'
@@ -140,30 +144,19 @@ alias gs="git stash"
 alias gsu="git submodule update --init"
 alias gf="git fetch"
 alias gmm="git merge -s recursive -X patience -X ignore-all-space origin/master"
+alias gmmm="git fetch main && git merge -s recursive -X patience -X ignore-all-space main/master"
 alias gitwork="cp ~/.ssh/work.config ~/.ssh/config && cp ~/work.gitconfig ~/.gitconfig"
 alias gitrob="cp ~/.ssh/rob.config ~/.ssh/config && cp ~/rob.gitconfig ~/.gitconfig"
 alias cleanbranches='~/bin/cleanbranches.sh'
 
 # Bigsky aliases
-by() {
-  if [[ $(ps | grep "manage.py runserver 0.0" -c) -lt 2 ]]; then
-    echo Starting Bigsky
-    bs
-    workon sky
-    if [[ $1 == "" ]]; then
-      (python manage.py runserver 0.0.0.0:8001 2>&1) > /tmp/bs.log &
-    else 
-      python manage.py runserver 0.0.0.0:8001
-    fi
-  else
-    echo Already running
-  fi
-}
 
 alias skyup="bs && git pull && git submodule update --init && workon sky && pip install -r requirements_dev.txt"
 alias nobs="killall python -SIGINT"
+alias killbs="killall python"
+
 alias repip='bs && workon sky && pip install -r requirements_dev.txt'
-alias revenv="deac && rm -rf /Users/robbecker/Envs/sky && bs && mkvirtualenv sky -a /Users/robbecker/workspace/bigsky"
+
 alias bsant='\
 bs && \
 SUPPORTPATH=$HOME/workspace/support && \
@@ -174,53 +167,22 @@ workon sky && \
 ant full'
 alias bsmyaccount="echo Rob,Becker,rob,go,,Workiva,rob.becker@workiva.com,666-666-6667,555-555-5556,444-444-4445,333-333-3334,2131 North Loop Drive,,,Ames,IA,50011 > ~/workspace/bigsky/tools/bulkdata/accounts.csv"
 alias bslinkdocviewerassets='bs && workon sky && ./tools/link_assets.py sky.docviewer assets'
-alias piplink_dv='ws && rm ./static/sky-docviewer/* && \
+alias piplink_dv='bs && workon sky && rm -rf ./static/sky-docviewer && mkdir ./static/sky-docviewer && \
 { pip uninstall -y sky-docviewer; pip install -e ../wf-js-document-viewer; } && \
 ant link-libs && \
 bslinkdocviewerassets'
-alias piplink_sc='ws && { pip uninstall -y server_composition; pip install -e ../server_composition; }'
-alias piplink_vs='ws && { pip uninstall -y wf-viewer-services; pip install -e ../wf-viewer-services; }'
-alias piplink_as='ws && { pip uninstall -y wf-annotation-services; pip install -e ../wf-annotation-services; }'
-alias piplink_books='ws && { pip uninstall -y wf-books; pip install -e ../wf-books; } && ant link-libs && ./tools/link_assets.py wf.apps.books assets'
+alias piplink_sc='bs && workon sky && { pip uninstall -y server_composition; pip install -e ../server_composition; }'
+alias piplink_vs='bs && workon sky && { pip uninstall -y wf-viewer-services; pip install -e ../wf-viewer-services; }'
+alias piplink_as='bs && workon sky && { pip uninstall -y wf-annotation-services; pip install -e ../wf-annotation-services; }'
+alias piplink_books='bs && workon sky && { pip uninstall -y wf-books; pip install -e ../wf-books; } && ant link-libs && ./tools/link_assets.py wf.apps.books assets'
 alias piplink_all='piplink_vs && piplink_sc && piplink_docviewer && piplink_as'
 alias bsdocviewerinstall='bslinkdocviewerassets && bsdocviewerpip'
-alias resetdata='bsmyaccount && bs && workon sky && rm -rf datastore && mkdir datastore && python tools/erase_reset_data.py --admin="rob" --password="go" --enabled_settings=enable_presentations,enable_doc_viewer,enable_two_column'
+alias resetdata='bsmyaccount && bs && workon sky && rm -rf datastore && mkdir datastore && python tools/erase_reset_data.py --use_sqlite --admin="rob" --password="go" --enabled_settings=enable_presentations,enable_doc_viewer,enable_two_column'
 alias bslog="tail -f /tmp/bs.log"
 alias dsback="bs && rm -rf ~/ds/datastore && cp -R datastore ~/ds"
-alias dsrest="bs && cp -R ~/ds/datastore"
-bsfonts() {
-  bs
-  workon sky
-  echo fakepassword | python tools/remote_api/upload_font.py ../font/fonts/general --wf-enable --email=junk --passin
-  echo fakepassword | python tools/remote_api/upload_font.py ../font/fonts/embedded_in_editor --wf-enable --email=junk --passin
-  echo fakepassword | python tools/remote_api/upload_font.py ../font/fonts/restricted --wf-enable --email=junk --passin
-}
-rebs() {
-  nobs
-  bs
-  gcm -f
-  git clean -fxd
-  revenv
-  bsmyaccount
-  bs
-  skyup
-  bsant
-  resetdata
-  by
-  sleep 5
-  bsfonts
-  say Done with all the bullshit
-}
-redv() {
-  nobs
-  dv
-  rejs
-  grunt
-  piplink_dv
-  by
-}
+alias mockssc="python server_composition/test_utilities/mock_service/main.py"
+
 # Alias all the things
-alias ws='bs && workon sky'
 alias pfz='bs && workon sky && pip freeze'
 alias deac='[[ -n $VIRTUAL_ENV ]] && deactivate'
 alias mvext="for i in *.ts ; do mv $i ${i:r}.dart ; done"
@@ -247,7 +209,7 @@ alias adbwear="adb -d forward tcp:5601 tcp:5601"
 alias adbbtwear="adb forward tcp:4444 localabstract:/adb-hub; adb connect localhost:4444"
 
 # Appspot stuff
-alias bsdeploy="ws && rm -rf external_libs/functional_tests && bsdeploy.sh"
+alias bsdeploy="bs && workon sky && rm -rf external_libs/functional_tests && bsdeploy.sh"
 
 # convert a mov to animated gif
 alias mov2gif="ffmpeg -i in.mov -s 640x480 -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=3 --delay=3 > out.gif"
@@ -255,7 +217,23 @@ alias mov2gif="ffmpeg -i in.mov -s 640x480 -pix_fmt rgb24 -r 10 -f gif - | gifsi
 alias passit="runscope-passageway --bucket=17oi37jseh6z --fixed 8001"
 alias nopass="killall runscope-passageway"
 
+alias sad="open 'http://www.sadtrombone.com/?autoplay=true'"
+alias dartium="/Users/robbecker/dart/chromium/Chromium.app/Contents/MacOS/Chromium"
+alias pg="pub get"
+alias pb="pub build"
+alias pup="pub upgrade"
+alias repub="rm -rf packages ~/.pub-cache && pub cache repair && pub get"
+
+
 ## functions
+
+revenv() {
+  deac
+  rm -rf /Users/robbecker/Envs/sky
+  bs
+  mkvirtualenv sky -a /Users/robbecker/workspace/bigsky
+}
+
 nvsup() {
 
   local workerTag="latest"
@@ -269,7 +247,7 @@ nvsup() {
   if [[ $2 != "" ]]; then
     managerTag="$2"
   fi
-
+  echo Using worker $workerTag manager $managerTag
   b2d up
 
   # # Run the NVS Task Manager
@@ -286,6 +264,74 @@ nvsup() {
   docker run -d --name nvs-worker --link nvs-task-manager:nvs-task-manager -e "DEMETER_CONF=-l DEBUG" docker.webfilings.org/hydra/nvs-worker:"$workerTag"
 
   docker start nvs-task-manager
-  docker start nvs-worker  
+  docker start nvs-worker
   docker ps
+}
+dsrest() {
+  nobs
+  sleep 1
+  echo Restoring datastore
+  cp -R ~/ds/datastore datstore
+  by
+}
+
+bsfonts() {
+  bs
+  workon sky
+  echo fakepassword | python tools/remote_api/upload_font.py ../font/fonts/general --wf-enable --email=junk --passin --skip-check
+  echo fakepassword | python tools/remote_api/upload_font.py ../font/fonts/embedded_in_editor --wf-enable --email=junk --passin --skip-check
+  echo fakepassword | python tools/remote_api/upload_font.py ../font/fonts/restricted --wf-enable --email=junk --passin --skip-check
+}
+rebs() {
+  nobs
+  bs
+  gcm -f
+  git clean -fxd
+  revenv
+  bsmyaccount
+  bs
+  skyup
+  bsant
+  resetdata
+  by
+  sleep 5
+  bsfonts
+  say Done with all the bullshit
+}
+redv() {
+  nobs
+  dv
+  rejs
+  grunt
+  piplink_dv
+  by
+  say D V ready
+}
+rebolt() {
+  cd ~/workspace/bolt
+  deactivate
+  rmvirtualenv bolt
+  rm -rf server/lib
+  mkvirtualenv bolt -a server
+  workon bolt
+  cd server
+  pip install -r requirements_dev.txt
+  export PYTHONPATH=/usr/local/google_appengine
+  link_libs -d lib -r requirements.txt
+  nosetests
+}
+by() {
+  if [[ $(ps | grep "manage.py runserver 0.0" -c) -lt 2 ]]; then
+    echo Starting Bigsky
+    bs
+    workon sky
+    if [[ $1 == "" ]]; then
+      (python manage.py runserver 0.0.0.0:8001 --use_sqlite 2>&1) > /tmp/bs.log &
+      deactivate
+    else
+      python manage.py runserver 0.0.0.0:8001 --use_sqlite
+    fi
+  else
+    echo Already running
+  fi
 }
